@@ -1,54 +1,31 @@
-const getSumBtn = document.createElement("button");
-getSumBtn.append("Get Total Price");
-document.body.appendChild(getSumBtn);
+// Select all price elements and calculate total
+const priceElements = document.querySelectorAll('.prices');
+let total = 0;
 
-const getSum = () => {
-//Add your code here
-	const getSumBtn = document.createElement("button");
-getSumBtn.append("Get Total Price");
-document.body.appendChild(getSumBtn);
+priceElements.forEach(element => {
+    const numericValue = element.textContent.replace(/[^\d.]/g, '');
+    total += parseFloat(numericValue) || 0;
+});
 
-const getSum = () => {
-    // Select all price elements
-    const priceElements = document.querySelectorAll(".price");
+// Create table row with total
+const table = document.querySelector('table');
+const newRow = document.createElement('tr');
+const totalCell = document.createElement('td');
 
-    let total = 0;
+// Set column span to match existing columns
+const firstItemRow = document.querySelector('.item');
+if (firstItemRow) {
+    totalCell.setAttribute('colspan', firstItemRow.cells.length);
+}
 
-    // Sum up all prices
-    priceElements.forEach(price => {
-        total += parseFloat(price.textContent); // Convert price text to number and sum it
-    });
+// Style and add total value
+totalCell.textContent = `Total: ₹${total.toFixed(2)}`;
+totalCell.style.fontWeight = 'bold';
+newRow.appendChild(totalCell);
 
-    // Check if total row already exists and remove it
-    const existingTotalRow = document.getElementById("totalRow");
-    if (existingTotalRow) {
-        existingTotalRow.remove();
-    }
-
-    // Get the table reference
-    const table = document.querySelector("table");
-
-    // Create a new row for total price
-    const newRow = document.createElement("tr");
-    newRow.id = "totalRow"; // Assign an ID to the row
-
-    // Create a single cell spanning two columns
-    const newCell = document.createElement("td");
-    newCell.setAttribute("colspan", "2");
-    newCell.style.fontWeight = "bold";
-    newCell.style.textAlign = "center";
-    newCell.textContent = `Total Price: Rs ${total}`;
-
-    // Append the cell to the row
-    newRow.appendChild(newCell);
+// Append to table (handles both tbody and direct insertion)
+if (table.tBodies[0]) {
+    table.tBodies[0].appendChild(newRow);
+} else {
     table.appendChild(newRow);
-};
-
-// Add event listener to the button
-getSumBtn.addEventListener("click", getSum);
-
-  
-};
-
-getSumBtn.addEventListener("click", getSum);
-
+}

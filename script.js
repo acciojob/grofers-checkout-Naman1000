@@ -1,31 +1,24 @@
-// Select all price elements and calculate total
-const priceElements = document.querySelectorAll('.price');
+// Select all price cells using the correct class name
+const priceElements = document.querySelectorAll(".price");
+
 let total = 0;
 
-priceElements.forEach(element => {
-    const numericValue = element.textContent.replace(/[^\d.]/g, '');
-    total += parseFloat(numericValue) || 0;
+// Loop through each price cell and add its value to total
+priceElements.forEach(cell => {
+  total += parseFloat(cell.textContent);
 });
 
-// Create table row with total
-const table = document.querySelector('table');
-const newRow = document.createElement('tr');
-const totalCell = document.createElement('td');
+// Create a new row and a cell for the total
+const totalRow = document.createElement("tr");
+const totalCell = document.createElement("td");
 
-// Set column span to match existing columns
-const firstItemRow = document.querySelector('.item');
-if (firstItemRow) {
-    totalCell.setAttribute('colspan', firstItemRow.cells.length);
-}
+// Make the total cell span both columns
+totalCell.setAttribute("colspan", "2");
+totalCell.style.fontWeight = "bold";
+totalCell.textContent = `Total: Rs ${total}`;
 
-// Style and add total value
-totalCell.textContent = `Total: ₹${total.toFixed(2)}`;
-totalCell.style.fontWeight = 'bold';
-newRow.appendChild(totalCell);
+// Append the cell to the row
+totalRow.appendChild(totalCell);
 
-// Append to table (handles both tbody and direct insertion)
-if (table.tBodies[0]) {
-    table.tBodies[0].appendChild(newRow);
-} else {
-    table.appendChild(newRow);
-}
+// Append the row to the table
+document.querySelector("table").appendChild(totalRow);
